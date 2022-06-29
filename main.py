@@ -23,12 +23,40 @@ def draw_grid(win, grid):
         for i in range(COLS + 1):
             pygame.draw.line(win, LIGHTGRAY, (i * PIXEL_SIZE, 0), (i * PIXEL_SIZE, HEIGHT - TOOLBAR_HEIGHT))
 
+def draw_mouse_position_text(win):
+    pos = pygame.mouse.get_pos()
+    pos_font = get_font(12)
+    
+    try:
+        row, col = get_row_col_from_pos(pos)
+        text_surface = pos_font.render(str(row) + ", " + str(col), 1, BLACK)
+        win.blit(text_surface, (5 , HEIGHT - TOOLBAR_HEIGHT))
+    except IndexError:
+        for button in buttons:
+            if not button.hover(pos):
+                continue
+            if button.text == "Clear":
+                text_surface = pos_font.render("Clear Everything", 1, BLACK)
+                win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
+                break
+            if button.text == "Erase":
+                text_surface = pos_font.render("Erase", 1, BLACK)
+                win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
+                break
+            r,g,b = button.color
+            text_surface = pos_font.render("( " + str(r) + ", " + str(g) + ", " + str(b) + " )", 1, BLACK)
+            
+            win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
+    
+
 def draw(win, grid, buttons):
     win.fill(BG_COLOR)
     draw_grid(win, grid)
 
     for button in buttons:
         button.draw(win)
+
+    draw_mouse_position_text(win)
     pygame.display.update()
 
 def get_row_col_from_pos(pos):
@@ -50,12 +78,12 @@ drawing_color = BLACK
 
 button_y = HEIGHT - TOOLBAR_HEIGHT/2 - 25
 buttons = [
-    Button(10, button_y, 50, 50, BLACK),
-    Button(70, button_y, 50, 50, RED),
-    Button(130, button_y, 50, 50, GREEN),
-    Button(190, button_y, 50, 50, BLUE),
-    Button(250, button_y, 50, 50, WHITE, "Erase", BLACK),
-    Button(310, button_y, 50, 50, WHITE, "Clear", BLACK),
+    Button(110, button_y, 50, 50, BLACK),
+    Button(170, button_y, 50, 50, RED),
+    Button(230, button_y, 50, 50, GREEN),
+    Button(290, button_y, 50, 50, BLUE),
+    Button(350, button_y, 50, 50, WHITE, "Erase", BLACK),
+    Button(410, button_y, 50, 50, WHITE, "Clear", BLACK),
 ]
 while run:
     clock.tick(FPS) #limiting FPS to 60 or any other value

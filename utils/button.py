@@ -28,3 +28,13 @@ class Button:
             return False
 
         return True
+
+    def hover(self, pos):
+        x, y = pos
+
+        if not (x >= self.x and x <= self.x + self.width):
+            return False
+        if not (y >= self.y and y <= self.y + self.height):
+            return False
+
+        return True
