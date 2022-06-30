@@ -1,5 +1,5 @@
 # Pyaint
-An Opensource paint program using Python and Pygame. Features will be added by the community as time goes on.
+An open source paint program using Python and Pygame. Features will be added by the community as time goes on.
 
 You can go to the Wiki to get more details on this project.
 
