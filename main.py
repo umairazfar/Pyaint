@@ -56,6 +56,8 @@ def draw(win, grid, buttons):
     for button in buttons:
         button.draw(win)
 
+    draw_button.draw(win)
+
     draw_mouse_position_text(win)
     pygame.display.update()
 
@@ -85,6 +87,10 @@ buttons = [
     Button(350, button_y, 50, 50, WHITE, "Erase", BLACK),
     Button(410, button_y, 50, 50, WHITE, "Clear", BLACK),
 ]
+
+draw_button = Button(5, HEIGHT - TOOLBAR_HEIGHT/2 - 30, 60, 60, drawing_color)
+buttons.append(draw_button)
+
 while run:
     clock.tick(FPS) #limiting FPS to 60 or any other value
 
@@ -105,8 +111,10 @@ while run:
                     if button.text == "Clear":
                         grid = init_grid(ROWS, COLS, BG_COLOR)
                         drawing_color = BLACK
+                        draw_button.color = drawing_color
                         break
                     drawing_color = button.color
+                    draw_button.color = drawing_color
                     break
 
     draw(WIN, grid, buttons)
