@@ -19,9 +19,9 @@ def draw_grid(win, grid):
 
     if DRAW_GRID_LINES:
         for i in range(ROWS + 1):
-            pygame.draw.line(win, LIGHTGRAY, (0, i * PIXEL_SIZE), (WIDTH, i * PIXEL_SIZE))
+            pygame.draw.line(win, SILVER, (0, i * PIXEL_SIZE), (WIDTH, i * PIXEL_SIZE))
         for i in range(COLS + 1):
-            pygame.draw.line(win, LIGHTGRAY, (i * PIXEL_SIZE, 0), (i * PIXEL_SIZE, HEIGHT - TOOLBAR_HEIGHT))
+            pygame.draw.line(win, SILVER, (i * PIXEL_SIZE, 0), (i * PIXEL_SIZE, HEIGHT - TOOLBAR_HEIGHT))
 
 def draw_mouse_position_text(win):
     pos = pygame.mouse.get_pos()
@@ -56,6 +56,8 @@ def draw(win, grid, buttons):
     for button in buttons:
         button.draw(win)
 
+    draw_button.draw(win)
+
     draw_mouse_position_text(win)
     pygame.display.update()
 
@@ -75,16 +77,28 @@ run = True
 clock = pygame.time.Clock()
 grid = init_grid(ROWS, COLS, BG_COLOR)
 drawing_color = BLACK
+button_width = 40
+button_height = 40
 
-button_y = HEIGHT - TOOLBAR_HEIGHT/2 - 25
-buttons = [
-    Button(110, button_y, 50, 50, BLACK),
-    Button(170, button_y, 50, 50, RED),
-    Button(230, button_y, 50, 50, GREEN),
-    Button(290, button_y, 50, 50, BLUE),
-    Button(350, button_y, 50, 50, WHITE, "Erase", BLACK),
-    Button(410, button_y, 50, 50, WHITE, "Clear", BLACK),
-]
+button_y_top_row = HEIGHT - TOOLBAR_HEIGHT/2  - button_height - 1
+button_y_bot_row = HEIGHT - TOOLBAR_HEIGHT/2   + 1
+button_space = 42
+
+buttons = []
+
+for i in range(int(len(COLORS)/2)):
+    buttons.append( Button(100 + button_space * i, button_y_top_row, button_width, button_height, COLORS[i]) )
+
+for i in range(int(len(COLORS)/2)):
+    buttons.append( Button(100 + button_space * i, button_y_bot_row, button_width, button_height, COLORS[i + int(len(COLORS)/2)]) )
+
+
+buttons.append(Button(WIDTH - button_space, button_y_top_row, button_width, 40, WHITE, "Erase", BLACK))
+buttons.append(Button(WIDTH - button_space, button_y_bot_row, button_width, 40, WHITE, "Clear", BLACK))
+
+draw_button = Button(5, HEIGHT - TOOLBAR_HEIGHT/2 - 30, 60, 60, drawing_color)
+buttons.append(draw_button)
+
 while run:
     clock.tick(FPS) #limiting FPS to 60 or any other value
 
@@ -105,8 +119,10 @@ while run:
                     if button.text == "Clear":
                         grid = init_grid(ROWS, COLS, BG_COLOR)
                         drawing_color = BLACK
+                        draw_button.color = drawing_color
                         break
                     drawing_color = button.color
+                    draw_button.color = drawing_color
                     break
 
     draw(WIN, grid, buttons)
