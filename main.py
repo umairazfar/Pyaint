@@ -99,6 +99,26 @@ buttons.append(Button(WIDTH - button_space, button_y_bot_row, button_width, 40, 
 draw_button = Button(5, HEIGHT - TOOLBAR_HEIGHT/2 - 30, 60, 60, drawing_color)
 buttons.append(draw_button)
 
+<<<<<<< Updated upstream
+=======
+button_width = 40
+button_height = 40
+button_y_top_row = HEIGHT - TOOLBAR_HEIGHT/2  - button_height - 1
+button_y_bot_row = HEIGHT - TOOLBAR_HEIGHT/2   + 1
+button_space = 42
+
+buttons = []
+
+for i in range(int(len(COLORS)/2)):
+    buttons.append( Button(100 + button_space * i, button_y_top_row, button_width, button_height, COLORS[i]) )
+
+for i in range(int(len(COLORS)/2)):
+    buttons.append( Button(100 + button_space * i, button_y_bot_row, button_width, button_height, COLORS[i + int(len(COLORS)/2)]) )
+
+
+buttons.append(Button(WIDTH - button_space, button_y_top_row, button_width, 40, WHITE, "Erase", BLACK))
+buttons.append(Button(WIDTH - button_space, button_y_bot_row, button_width, 40, WHITE, "Clear", BLACK))
+>>>>>>> Stashed changes
 while run:
     clock.tick(FPS) #limiting FPS to 60 or any other value
 
