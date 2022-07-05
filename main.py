@@ -72,18 +72,15 @@ def get_row_col_from_pos(pos):
 def paint_using_brush(row, col, size):
     if BRUSH_SIZE == 1:
         grid[row][col] = drawing_color
-    else:
-        #Come up with an algorithm so that it works for values greater than 2
-        r = row-1
-        c = col-1
+    else: #for values greater than 1        
+        r = row-BRUSH_SIZE+1
+        c = col-BRUSH_SIZE+1
         
-        for i in range(BRUSH_SIZE+1):
-            for j in range(BRUSH_SIZE+1):
-                print(str(r)+","+str(c))
+        for i in range(BRUSH_SIZE*2-1):
+            for j in range(BRUSH_SIZE*2-1):
                 if r+i<0 or c+j<0 or r+i>=ROWS or c+j>=COLS:
                     continue
-                grid[r+i][c+j] = drawing_color
-            
+                grid[r+i][c+j] = drawing_color 
         
     pass
 

@@ -27,7 +27,7 @@ DRAW_GRID_LINES = True
 
 MOUSE_POSITION_TEXT_SIZE = 12
 
-BRUSH_SIZE = 2
+BRUSH_SIZE = 1  #can be 2, 3, 4 or any other value
 
 def get_font(size):
     return pygame.font.SysFont("arial", size)
