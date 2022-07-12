@@ -1,6 +1,6 @@
 from utils import *
 
-WIN = pygame.display.set_mode((WIDTH, HEIGHT))
+WIN = pygame.display.set_mode((WIDTH + RIGHT_TOOLBAR_WIDTH, HEIGHT))
 pygame.display.set_caption("Pyaint")
 
 def init_grid(rows, columns, color):
@@ -46,6 +46,23 @@ def draw_mouse_position_text(win):
             text_surface = pos_font.render("( " + str(r) + ", " + str(g) + ", " + str(b) + " )", 1, BLACK)
             
             win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
+        
+        for button in brush_widths:
+            if not button.hover(pos):
+                continue
+            if button.width == size_small:
+                text_surface = pos_font.render("Small-Sized Brush", 1, BLACK)
+                win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
+                break
+            if button.width == size_medium:
+                text_surface = pos_font.render("Medium-Sized Brush", 1, BLACK)
+                win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
+                break
+            if button.width == size_large:
+                text_surface = pos_font.render("Large-Sized Brush", 1, BLACK)
+                win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
+                break
+
     
 
 def draw(win, grid, buttons):
@@ -54,9 +71,21 @@ def draw(win, grid, buttons):
 
     for button in buttons:
         button.draw(win)
-
+    
+    draw_brush_widths(win)
     draw_mouse_position_text(win)
     pygame.display.update()
+
+
+def draw_brush_widths(win):
+    brush_widths = [
+        Button(rtb_x - size_small/2, 480, size_small, size_small, drawing_color, None, None, "ellipse"),    
+        Button(rtb_x - size_medium/2, 510, size_medium, size_medium, drawing_color, None, None, "ellipse") , 
+        Button(rtb_x - size_large/2, 550, size_large, size_large, drawing_color, None, None, "ellipse")  
+    ]
+    for button in brush_widths:
+        button.draw(win)  
+
 
 def get_row_col_from_pos(pos):
     x, y = pos
@@ -96,9 +125,22 @@ buttons = [
     Button(170, button_y, 50, 50, RED),
     Button(230, button_y, 50, 50, GREEN),
     Button(290, button_y, 50, 50, BLUE),
-    Button(350, button_y, 50, 50, WHITE, "Erase", BLACK),
-    Button(410, button_y, 50, 50, WHITE, "Clear", BLACK),
+    Button(350, button_y, 50, 50, WHITE, "Erase"),
+    Button(410, button_y, 50, 50, WHITE, "Clear"),
 ]
+
+size_small = 25
+size_medium = 35
+size_large = 50
+
+rtb_x = WIDTH + RIGHT_TOOLBAR_WIDTH/2
+brush_widths = [
+    Button(rtb_x - size_small/2, 480, size_small, size_small, drawing_color, None, "ellipse"),    
+    Button(rtb_x - size_medium/2, 510, size_medium, size_medium, drawing_color, None, "ellipse") , 
+    Button(rtb_x - size_large/2, 550, size_large, size_large, drawing_color, None, "ellipse")  
+]
+
+
 while run:
     clock.tick(FPS) #limiting FPS to 60 or any other value
 
@@ -122,7 +164,19 @@ while run:
                         break
                     drawing_color = button.color
                     break
+                
+                for button in brush_widths:
+                    if not button.clicked(pos):
+                        continue
+                    #set brush width
+                    if button.width == size_small:
+                        BRUSH_SIZE = 1
+                    elif button.width == size_medium:
+                        BRUSH_SIZE = 2
+                    elif button.width == size_large:
+                        BRUSH_SIZE = 3
+                
 
     draw(WIN, grid, buttons)
-    
+
 pygame.quit()

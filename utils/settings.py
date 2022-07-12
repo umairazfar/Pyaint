@@ -19,6 +19,8 @@ ROWS = COLS     = 40    #increase to have smaller pixels
 
 TOOLBAR_HEIGHT  = HEIGHT - WIDTH
 
+RIGHT_TOOLBAR_WIDTH = 75
+
 PIXEL_SIZE      = WIDTH // COLS
 
 BG_COLOR        = WHITE
