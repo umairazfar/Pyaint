@@ -85,8 +85,21 @@ def draw_brush_widths(win):
         Button(rtb_x - size_large/2, 550, size_large, size_large, drawing_color, None, None, "ellipse")  
     ]
     for button in brush_widths:
-        button.draw(win)  
-
+        button.draw(win)
+        # Set border colour
+        border_color = BLACK
+        if button.color == BLACK:
+            border_color = GRAY
+        else:
+            border_color = BLACK
+        # Set border width
+        border_width = 2
+        if ((BRUSH_SIZE == 1 and button.width == size_small) or (BRUSH_SIZE == 2 and button.width == size_medium) or (BRUSH_SIZE == 3 and button.width == size_large)): 
+            border_width = 4
+        else:
+            border_width = 2
+        # Draw border
+        pygame.draw.ellipse(win, border_color, (button.x, button.y, button.width, button.height), border_width) #border
 
 def get_row_col_from_pos(pos):
     x, y = pos

@@ -19,7 +19,7 @@ class Button:
 
         elif self.shape == "ellipse":
             pygame.draw.ellipse(win, self.color, (self.x, self.y, self.width, self.height)) #fill
-            pygame.draw.ellipse(win, BLACK, (self.x, self.y, self.width, self.height), 2) #border
+            # pygame.draw.ellipse(win, BLACK, (self.x, self.y, self.width, self.height), 2) #border
 
         if self.text:
             button_font = get_font(int(self.width/2) - 6)
