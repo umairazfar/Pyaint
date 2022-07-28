@@ -224,7 +224,7 @@ for i in range(int(len(COLORS)/2)):
 
 buttons.append(Button(WIDTH - button_space, button_y_top_row, button_width, button_height, WHITE, "Erase", BLACK))  # Erase Button
 buttons.append(Button(WIDTH - button_space, button_y_bot_row, button_width, button_height, WHITE, "Clear", BLACK))  # Clear Button
-buttons.append(Button(WIDTH, button_y_top_row,button_width, button_height, name = "FillBucket",image_url="assets/paint-bucket.png"))
+buttons.append(Button(WIDTH - 3*button_space + 5, button_y_top_row,button_width, button_height, name = "FillBucket",image_url="assets/paint-bucket.png")) #FillBucket
 
 
 draw_button = Button(5, HEIGHT - TOOLBAR_HEIGHT/2 - 30, 60, 60, drawing_color)
@@ -282,8 +282,8 @@ while run:
                         BRUSH_SIZE = 3
 
                     STATE = "COLOR"
-                
 
+        
     draw(WIN, grid, buttons)
 
 pygame.quit()
