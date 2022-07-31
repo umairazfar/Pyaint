@@ -2,7 +2,7 @@ from utils import *
 
 WIN = pygame.display.set_mode((WIDTH + RIGHT_TOOLBAR_WIDTH, HEIGHT))
 pygame.display.set_caption("Pyaint")
-
+STATE = "COLOR"
 def init_grid(rows, columns, color):
     grid = []
 
@@ -127,6 +127,63 @@ def paint_using_brush(row, col, size):
         
     pass
 
+# Checks whether the coordinated are within the canvas
+def inBounds(row, col):
+    if row < 0 or col < 0:
+        return 0
+    if row >= ROWS or col >= COLS:
+        return 0
+    return 1
+
+def fill_bucket(row, col, color):
+   
+  # Visiting array
+  vis = [[0 for i in range(101)] for j in range(101)]
+     
+  # Creating queue for bfs
+  obj = []
+     
+  # Pushing pair of {x, y}
+  obj.append([row, col])
+     
+  # Marking {x, y} as visited
+  vis[row][col] = 1
+     
+  # Until queue is empty
+  while len(obj) > 0:
+     
+    # Extracting front pair
+    coord = obj[0]
+    x = coord[0]
+    y = coord[1]
+    preColor = grid[x][y]
+   
+    grid[x][y] = color
+       
+    # Popping front pair of queue
+    obj.pop(0)
+   
+    # For Upside Pixel or Cell
+    if inBounds(x + 1, y) == 1 and vis[x + 1][y] == 0 and grid[x + 1][y] == preColor:
+      obj.append([x + 1, y])
+      vis[x + 1][y] = 1
+       
+    # For Downside Pixel or Cell
+    if inBounds(x - 1, y) == 1 and vis[x - 1][y] == 0 and grid[x - 1][y] == preColor:
+      obj.append([x - 1, y])
+      vis[x - 1][y] = 1
+       
+    # For Right side Pixel or Cell
+    if inBounds(x, y + 1) == 1 and vis[x][y + 1] == 0 and grid[x][y + 1] == preColor:
+      obj.append([x, y + 1])
+      vis[x][y + 1] = 1
+       
+    # For Left side Pixel or Cell
+    if inBounds(x, y - 1) == 1 and vis[x][y - 1] == 0 and grid[x][y - 1] == preColor:
+      obj.append([x, y - 1])
+      vis[x][y - 1] = 1
+
+
 run = True
 
 clock = pygame.time.Clock()
@@ -154,6 +211,8 @@ button_y_top_row = HEIGHT - TOOLBAR_HEIGHT/2  - button_height - 1
 button_y_bot_row = HEIGHT - TOOLBAR_HEIGHT/2   + 1
 button_space = 42
 
+
+# Adding Buttons
 buttons = []
 
 for i in range(int(len(COLORS)/2)):
@@ -163,8 +222,10 @@ for i in range(int(len(COLORS)/2)):
     buttons.append( Button(100 + button_space * i, button_y_bot_row, button_width, button_height, COLORS[i + int(len(COLORS)/2)]) )
 
 
-buttons.append(Button(WIDTH - button_space, button_y_top_row, button_width, button_height, WHITE, "Erase", BLACK))
-buttons.append(Button(WIDTH - button_space, button_y_bot_row, button_width, button_height, WHITE, "Clear", BLACK))
+buttons.append(Button(WIDTH - button_space, button_y_top_row, button_width, button_height, WHITE, "Erase", BLACK))  # Erase Button
+buttons.append(Button(WIDTH - button_space, button_y_bot_row, button_width, button_height, WHITE, "Clear", BLACK))  # Clear Button
+buttons.append(Button(WIDTH - 3*button_space + 5, button_y_top_row,button_width, button_height, name = "FillBucket",image_url="assets/paint-bucket.png")) #FillBucket
+
 
 draw_button = Button(5, HEIGHT - TOOLBAR_HEIGHT/2 - 30, 60, 60, drawing_color)
 buttons.append(draw_button)
@@ -181,7 +242,13 @@ while run:
 
             try:
                 row, col = get_row_col_from_pos(pos)
-                paint_using_brush(row, col, BRUSH_SIZE)
+
+                if STATE == "COLOR":
+                    paint_using_brush(row, col, BRUSH_SIZE)
+
+                elif STATE == "FILL":
+                    fill_bucket(row, col, drawing_color)
+
             except IndexError:
                 for button in buttons:
                     if not button.clicked(pos):
@@ -190,9 +257,17 @@ while run:
                         grid = init_grid(ROWS, COLS, BG_COLOR)
                         drawing_color = BLACK
                         draw_button.color = drawing_color
+                        STATE = "COLOR"
                         break
+
+                    if button.name == "FillBucket":
+                        STATE = "FILL"
+                        break
+
+                    
                     drawing_color = button.color
                     draw_button.color = drawing_color
+                    
                     break
                 
                 for button in brush_widths:
@@ -205,8 +280,10 @@ while run:
                         BRUSH_SIZE = 2
                     elif button.width == size_large:
                         BRUSH_SIZE = 3
-                
 
+                    STATE = "COLOR"
+
+        
     draw(WIN, grid, buttons)
 
 pygame.quit()
