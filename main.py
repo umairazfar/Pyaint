@@ -261,7 +261,10 @@ while run:
                         break
 
                     if button.name == "FillBucket":
-                        STATE = "FILL"
+                         if STATE == "COLOR":
+                            STATE="FILL"
+                        elif STATE == "FILL":
+                            STATE="COLOR"
                         break
 
                     
