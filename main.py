@@ -271,7 +271,6 @@ while run:
 
                     if button.name == "FillBucket":
                         STATE = "FILL"
-                        
                         break
                     
                     if button.name == "Change":
@@ -285,11 +284,7 @@ while run:
                                     buttons.append(Button(HEIGHT - 2*button_width,(i*button_height)+5,button_width,button_height,WHITE,"B"+str(i-1), BLACK))
                                 if Change == True:
                                    buttons.append(Button(HEIGHT - 2*button_width,(i*button_height)+5,button_width,button_height,WHITE,"C"+str(i-1), BLACK))
-
-                            
-                            
-                        
-                    break
+                        break
                     
                     drawing_color = button.color
                     draw_button.color = drawing_color
