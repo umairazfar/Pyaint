@@ -3,6 +3,8 @@ from utils import *
 WIN = pygame.display.set_mode((WIDTH + RIGHT_TOOLBAR_WIDTH, HEIGHT))
 pygame.display.set_caption("Pyaint")
 STATE = "COLOR"
+Change = False
+
 def init_grid(rows, columns, color):
     grid = []
 
@@ -221,6 +223,13 @@ for i in range(int(len(COLORS)/2)):
 for i in range(int(len(COLORS)/2)):
     buttons.append( Button(100 + button_space * i, button_y_bot_row, button_width, button_height, COLORS[i + int(len(COLORS)/2)]) )
 
+#Right toolbar buttonst
+# need to add change toolbar button.
+for i in range(10):
+    if i == 0:
+        buttons.append(Button(HEIGHT - 2*button_width,(i*button_height)+5,button_width,button_height,WHITE,name="Change"))#Change toolbar buttons
+    else: 
+        buttons.append(Button(HEIGHT - 2*button_width,(i*button_height)+5,button_width,button_height,WHITE,"B"+str(i-1), BLACK))#append tools
 
 buttons.append(Button(WIDTH - button_space, button_y_top_row, button_width, button_height, WHITE, "Erase", BLACK))  # Erase Button
 buttons.append(Button(WIDTH - button_space, button_y_bot_row, button_width, button_height, WHITE, "Clear", BLACK))  # Clear Button
@@ -264,10 +273,26 @@ while run:
                     if button.name == "FillBucket":
                         STATE = "FILL"
                         break
+
+                    
+                    if button.name == "Change":
+                        Change = not Change
+                        print(Change)
+                        for i in range(10):
+                            if i == 0:
+                                buttons.append(Button(HEIGHT - 2*button_width,(i*button_height)+5,button_width,button_height,WHITE,name="Change"))
+                            else:
+                                if Change == False:  
+                                    buttons.append(Button(HEIGHT - 2*button_width,(i*button_height)+5,button_width,button_height,WHITE,"B"+str(i-1), BLACK))
+                                if Change == True:
+                                   buttons.append(Button(HEIGHT - 2*button_width,(i*button_height)+5,button_width,button_height,WHITE,"C"+str(i-1), BLACK))
+                        break
+
                      
                     if button.name == "Brush":
                         STATE = "COLOR"
                         break
+
 
                     
                     drawing_color = button.color
