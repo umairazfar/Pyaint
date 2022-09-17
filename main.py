@@ -44,6 +44,18 @@ def draw_mouse_position_text(win):
                 text_surface = pos_font.render("Erase", 1, BLACK)
                 win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
                 break
+            if button.name == "FillBucket":
+                text_surface = pos_font.render("Fill Bucket", 1, BLACK)
+                win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
+                break
+            if button.name == "Brush":
+                text_surface = pos_font.render("Brush", 1, BLACK)
+                win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
+                break
+            if button.name == "Change":
+                text_surface = pos_font.render("Swap Toolbar", 1, BLACK)
+                win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
+                break
             r,g,b = button.color
             text_surface = pos_font.render("( " + str(r) + ", " + str(g) + ", " + str(b) + " )", 1, BLACK)
             
@@ -63,9 +75,7 @@ def draw_mouse_position_text(win):
             if button.width == size_large:
                 text_surface = pos_font.render("Large-Sized Brush", 1, BLACK)
                 win.blit(text_surface, (10 , HEIGHT - TOOLBAR_HEIGHT))
-                break
-
-    
+                break    
 
 def draw(win, grid, buttons):
     win.fill(BG_COLOR)
@@ -74,7 +84,6 @@ def draw(win, grid, buttons):
     for button in buttons:
         button.draw(win)
 
-    #draw_button.draw(win)
     draw_brush_widths(win)
     draw_mouse_position_text(win)
     pygame.display.update()
@@ -125,9 +134,7 @@ def paint_using_brush(row, col, size):
             for j in range(BRUSH_SIZE*2-1):
                 if r+i<0 or c+j<0 or r+i>=ROWS or c+j>=COLS:
                     continue
-                grid[r+i][c+j] = drawing_color 
-        
-    pass
+                grid[r+i][c+j] = drawing_color         
 
 # Checks whether the coordinated are within the canvas
 def inBounds(row, col):
@@ -270,14 +277,12 @@ while run:
                         STATE = "COLOR"
                         break
 
-                    if button.name == "FillBucket":
+                    if button.name == "FillBucket":                        
                         STATE = "FILL"
                         break
-
                     
                     if button.name == "Change":
                         Change = not Change
-                        print(Change)
                         for i in range(10):
                             if i == 0:
                                 buttons.append(Button(HEIGHT - 2*button_width,(i*button_height)+5,button_width,button_height,WHITE,name="Change"))
@@ -287,13 +292,10 @@ while run:
                                 if Change == True:
                                    buttons.append(Button(HEIGHT - 2*button_width,(i*button_height)+5,button_width,button_height,WHITE,"C"+str(i-1), BLACK))
                         break
-
                      
                     if button.name == "Brush":
                         STATE = "COLOR"
                         break
-
-
                     
                     drawing_color = button.color
                     draw_button.color = drawing_color
@@ -312,7 +314,6 @@ while run:
                         BRUSH_SIZE = 3
 
                     STATE = "COLOR"
-
         
     draw(WIN, grid, buttons)
 
