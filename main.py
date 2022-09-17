@@ -233,7 +233,8 @@ for i in range(10):
 
 buttons.append(Button(WIDTH - button_space, button_y_top_row, button_width, button_height, WHITE, "Erase", BLACK))  # Erase Button
 buttons.append(Button(WIDTH - button_space, button_y_bot_row, button_width, button_height, WHITE, "Clear", BLACK))  # Clear Button
-buttons.append(Button(WIDTH - 3*button_space + 5, button_y_top_row,button_width, button_height, name = "FillBucket",image_url="assets/paint-bucket.png")) #FillBucket
+buttons.append(Button(WIDTH - 3*button_space + 5, button_y_top_row,button_width-5, button_height-5, name = "FillBucket",image_url="assets/paint-bucket.png")) #FillBucket
+buttons.append(Button(WIDTH - 3*button_space + 45, button_y_top_row,button_width-5, button_height-5, name = "Brush",image_url="assets/paint-brush.png")) #Brush
 
 
 draw_button = Button(5, HEIGHT - TOOLBAR_HEIGHT/2 - 30, 60, 60, drawing_color)
@@ -272,6 +273,7 @@ while run:
                     if button.name == "FillBucket":
                         STATE = "FILL"
                         break
+
                     
                     if button.name == "Change":
                         Change = not Change
@@ -285,6 +287,13 @@ while run:
                                 if Change == True:
                                    buttons.append(Button(HEIGHT - 2*button_width,(i*button_height)+5,button_width,button_height,WHITE,"C"+str(i-1), BLACK))
                         break
+
+                     
+                    if button.name == "Brush":
+                        STATE = "COLOR"
+                        break
+
+
                     
                     drawing_color = button.color
                     draw_button.color = drawing_color
