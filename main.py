@@ -253,7 +253,11 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:   #if user closed the program
             run = False
-        
+            
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if event.button==3:
+                STATE = "COLOR"    
+                
         if pygame.mouse.get_pressed()[0]:
             pos = pygame.mouse.get_pos()
 
